@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './expenditure-list.css';
 import Table from '../../components/table/Table';
 import { formatDateTo12Hours } from '../../store';
+import Form from '../../components/form/Form';
 
 const ExpenditureList = () => {
     const navigate = useNavigate();
@@ -42,7 +43,7 @@ const ExpenditureList = () => {
     // Fetch all expenditures
     const fetchExpenditures = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/expenditures');
+            const response = await axios.get('https://printingapp.onrender.com/api/expenditures');
             const data = response.data;
             setExpenditures(data);
 
@@ -57,7 +58,6 @@ const ExpenditureList = () => {
             }, 0);
 
             setTotalExpenditure(total);
-            toast.success('Expenditures fetched successfully!');
         } catch (error) {
             toast.error('Failed to fetch expenditures.');
         }
@@ -85,12 +85,12 @@ const ExpenditureList = () => {
               console.log(newFormData.date)
         
             if (isUpdating) {
-                await axios.put(`http://localhost:5000/api/expenditures/${updateId}`, newFormData);
+                await axios.put(`https://printingapp.onrender.com/api/expenditures/${updateId}`, newFormData);
                 toast.success('Expenditure updated successfully!');
                 setIsUpdating(false);
                 setUpdateId(null);
             } else {
-                await axios.post('http://localhost:5000/api/expenditures', newFormData);
+                await axios.post('https://printingapp.onrender.com/api/expenditures', newFormData);
                 toast.success('Expenditure added successfully!');
             }
 
@@ -124,7 +124,7 @@ const ExpenditureList = () => {
     //✅ Handle Delete Expenditure
     const deleteExpenditure = async (id)=>{
         try {
-            await axios. delete(`http://localhost:5000/api/expenditures/${id}`);
+            await axios. delete(`https://printingapp.onrender.com/api/expenditures/${id}`);
             toast.success('Expenditure deleted successfully!');
             fetchExpenditures();
         } catch (error) {
@@ -188,17 +188,34 @@ const ExpenditureList = () => {
 
 
             {/* Filter Inputs */}
-            <div className="filter-section">
+
+            <Form>
+                <div className="filter-expenditure">
                 <h2>Filter Expenditures</h2>
-                <input type="date" name="dateFrom" placeholder="From Date" value={filters.dateFrom} onChange={handleFilterChange} />
-                <input type="date" name="dateTo" placeholder="To Date" value={filters.dateTo} onChange={handleFilterChange} />
-                <input type="text" name="itemName" placeholder="Item Name" value={filters.itemName} onChange={handleFilterChange} />
-                <input type="text" name="spender" placeholder="Spender" value={filters.spender} onChange={handleFilterChange} />
-            </div>
+                    <div className="input-group">
+                        <div className="input-item">
+                            <input type="date" name="dateFrom" placeholder="From Date" value={filters.dateFrom} onChange={handleFilterChange} />
+                        </div>
+                        <div className="input-item">
+                            <input type="date" name="dateTo" placeholder="To Date" value={filters.dateTo} onChange={handleFilterChange} />
+                        </div>
+                    </div>
+
+                    <div className="input-group">
+                        <div className="input-item">
+                            <input type="text" name="itemName" placeholder="Item Name" value={filters.itemName} onChange={handleFilterChange} />
+                        </div>
+                        <div className="input-item">
+                            <input type="text" name="spender" placeholder="Spender" value={filters.spender} onChange={handleFilterChange} />
+                        </div>
+                    </div>
+                </div>
+            </Form>
+          
 
             {/* Add Expenditure Button */}
-            <button className="add-btn" onClick={() => setIsModalOpen(true)}>
-                Add Expenditure
+            <button className="floating-button" onClick={() => setIsModalOpen(true)}>
+                +
             </button>
 
             {/* Expenditure Table */}
@@ -210,7 +227,7 @@ const ExpenditureList = () => {
                             <th>Date</th>
                             <th>Item Name</th>
                             <th>Amount</th>
-                            <th>Spender</th>
+                            <th className='mobile-hide'>Spender</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -221,7 +238,7 @@ const ExpenditureList = () => {
                                 <td>{formatDateTo12Hours(expenditure.date)}</td>
                                 <td>{expenditure.itemName}</td>
                                 <td>N{expenditure.amount}</td>
-                                <td>{expenditure.spender}</td>
+                                <td className='mobile-hide'>{expenditure.spender}</td>
                                 <td>
                                     <button onClick={() => deleteExpenditure(expenditure._id)}>Delete</button>
                                     <button onClick={() => handleUpdateClick(expenditure)}>Update</button>
@@ -251,13 +268,38 @@ const ExpenditureList = () => {
                                 
                         } }>&times;</span>
                         <h2>{isUpdating ? 'Update Expenditure' : 'Add Expenditure'}</h2>
-                        <form onSubmit={handleFormSubmit}>
-                            <input type="text" name="itemName" placeholder="Item Name" value={formData.itemName} onChange={handleInputChange} required />
-                            <input type="number" name="amount" placeholder="Amount" value={formData.amount} onChange={handleInputChange} required />
-                            <input type="text" name="spender" placeholder="Spender" value={formData.spender} onChange={handleInputChange} required />
-                            <input type="datetime-local" name="date" value={formData.date} onChange={handleInputChange} required />
-                            <button type="submit">{isUpdating ? 'Update' : 'Add'} Expenditure</button>
-                        </form>
+                        <Form>
+                            <form onSubmit={handleFormSubmit}>
+                                <div className="input-group">
+                                    <div className="input-item">
+                                        <label htmlFor="itemName">Item Name</label>
+                                        <input type="text" name="itemName" placeholder="Item Name" value={formData.itemName} onChange={handleInputChange} required />
+                                    </div>
+
+                                    <div className="input-item">
+                                        <label htmlFor="amount">Amount</label>
+                                        <input type="number" name="amount" placeholder="Amount" value={formData.amount} onChange={handleInputChange} required />
+                                    </div>
+                                </div>
+
+                                <div className="input-group">
+                                    <div className="input-item">
+                                        <label htmlFor="spender">Spender</label>
+                                        <input type="text" name="spender" placeholder="Spender" value={formData.spender} onChange={handleInputChange} required />
+                                    </div>
+                                    <div className="input-item">
+                                        <label htmlFor="date">Date</label>
+                                        <input type="datetime-local" name="date" value={formData.date} onChange={handleInputChange} required />
+
+                                    </div>
+                                </div>
+                                
+                               
+                               
+                                
+                                <button type="submit">{isUpdating ? 'Update' : 'Add'} Expenditure</button>
+                            </form>
+                        </Form>
                     </div>
                 </div>
             )}

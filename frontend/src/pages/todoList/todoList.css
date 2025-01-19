@@ -52,7 +52,7 @@
 /* Style the checkbox container */
 label {
   display: flex;
-  align-items: center;
+  align-items: center; 
   cursor: pointer;
   gap: 1rem;
 }
@@ -64,11 +64,10 @@ input[type="checkbox"] {
   -moz-appearance: none;
   background-color: #e0e0e0;
   border: 2px solid #ccc;
-  width: 20px;
-  height: 20px;
+  padding: 8px;
   border-radius: 2px;
   cursor: pointer;
-  position: relative;
+  position: relative;  
 }
 
 /* When the checkbox is checked */

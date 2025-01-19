@@ -12,6 +12,7 @@ import Card from "../../components/card/Card.js";
 import "./invoice.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Form from "../../components/form/Form.js";
 
 const ServiceList = () => {
   const navigate = useNavigate();
@@ -41,8 +42,8 @@ const ServiceList = () => {
     dateTo: "",
   });
 
-   // Filter Total State
-   const [filterTotals, setFilterTotals] = useState({
+  // Filter Total State
+  const [filterTotals, setFilterTotals] = useState({
     totalCost: 0,
     totalPayment: 0,
     totalBalance: 0,
@@ -59,44 +60,44 @@ const ServiceList = () => {
     fetchServices();
   }, [filters]);
 
-    // Handle filter change
-    const handleFilterChange = (e) => {
-      setFilters({
-        ...filters,
-        [e.target.name]: e.target.value,
-      });
-    };
-
-    // Filter services based on the filter values
-    const filteredServices = services.filter((service) => {
-      const serviceDate = new Date(service.date);
-      const dateFrom = filters.dateFrom ? new Date(filters.dateFrom) : null;
-      const dateTo = filters.dateTo ? new Date(filters.dateTo) : null;
-  
-      const matchesServiceType =
-        !filters.serviceType || service.serviceType.toLowerCase().includes(filters.serviceType.toLowerCase());
-      const matchesProviderName =
-        !filters.providerName || service.providerName.toLowerCase().includes(filters.providerName.toLowerCase());
-      const matchesCustomerName =
-        !filters.customerName || service.customerName.toLowerCase().includes(filters.customerName.toLowerCase()); // Added filter for customerName
-      const matchesCustomerPhone = !filters.customerPhone || service.customerPhone.includes(filters.customerPhone);
-        const matchesDateRange =
-        (!dateFrom || serviceDate >= dateFrom) && (!dateTo || serviceDate <= dateTo);
-  
-      return matchesServiceType && matchesProviderName && matchesCustomerName && matchesCustomerPhone && matchesDateRange;
+  // Handle filter change
+  const handleFilterChange = (e) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
     });
+  };
 
-    console.log(filters.customerPhone);
+  // Filter services based on the filter values
+  const filteredServices = services.filter((service) => {
+    const serviceDate = new Date(service.date);
+    const dateFrom = filters.dateFrom ? new Date(filters.dateFrom) : null;
+    const dateTo = filters.dateTo ? new Date(filters.dateTo) : null;
 
-    const filteredTotalCost = filteredServices.reduce(( sum, filteredService) => sum + filteredService.cost, 0);
-    const filteredTotalPayment = filteredServices.reduce((sum, filteredService) => sum + filteredService.payment, 0);
-    const filteredTotalBalance = filteredServices.reduce((sum, filteredService)=> sum + (filteredService.cost > filteredService.payment ? filteredService.cost - filteredService.payment : 0),0 )
-   
+    const matchesServiceType =
+      !filters.serviceType || service.serviceType.toLowerCase().includes(filters.serviceType.toLowerCase());
+    const matchesProviderName =
+      !filters.providerName || service.providerName.toLowerCase().includes(filters.providerName.toLowerCase());
+    const matchesCustomerName =
+      !filters.customerName || service.customerName.toLowerCase().includes(filters.customerName.toLowerCase()); // Added filter for customerName
+    const matchesCustomerPhone = !filters.customerPhone || service.customerPhone.includes(filters.customerPhone);
+    const matchesDateRange =
+      (!dateFrom || serviceDate >= dateFrom) && (!dateTo || serviceDate <= dateTo);
+
+    return matchesServiceType && matchesProviderName && matchesCustomerName && matchesCustomerPhone && matchesDateRange;
+  });
+
+  console.log(filters.customerPhone);
+
+  const filteredTotalCost = filteredServices.reduce((sum, filteredService) => sum + filteredService.cost, 0);
+  const filteredTotalPayment = filteredServices.reduce((sum, filteredService) => sum + filteredService.payment, 0);
+  const filteredTotalBalance = filteredServices.reduce((sum, filteredService) => sum + (filteredService.cost > filteredService.payment ? filteredService.cost - filteredService.payment : 0), 0)
+
 
   // Fetch services from the server
   const fetchServices = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/services");
+      const response = await axios.get("https://printingapp.onrender.com/api/services");
       const sortedServices = response.data.sort(
         (a, b) => new Date(b.date) - new Date(a.date)
       );
@@ -132,14 +133,14 @@ const ServiceList = () => {
       if (editingServiceId) {
         // Update existing service
         await axios.put(
-          `http://localhost:5000/api/services/${editingServiceId}`,
+          `https://printingapp.onrender.com/api/services/${editingServiceId}`,
           newFormData
         );
         toast.success("Service updated successfully!");
         setEditingServiceId(null);
       } else {
         // Add new service
-        await axios.post("http://localhost:5000/api/services", newFormData);
+        await axios.post("https://printingapp.onrender.com/api/services", newFormData);
         toast.success("Service added successfully!");
       }
       fetchServices();
@@ -152,7 +153,7 @@ const ServiceList = () => {
         providerName: "",
         date: "",
       });
-      
+
       setIsModalOpen(false);
     } catch (error) {
       console.error(error);
@@ -178,7 +179,7 @@ const ServiceList = () => {
   // Delete a service
   const deleteService = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/services/${id}`);
+      await axios.delete(`https://printingapp.onrender.com/api/services/${id}`);
       fetchServices();
       toast.success("Service deleted successfully!");
     } catch (error) {
@@ -223,141 +224,168 @@ const ServiceList = () => {
 
   return (
     <>
-    <div className="add-job_service">
-      <button onClick={()=>setIsModalOpen(true)}>
+
+      <button className="floating-button" onClick={() => setIsModalOpen(true)}>
         +
       </button>
-    </div>
+
       <ToastContainer position="top-right" autoClose={5000} />
 
       <div className="service-summary">
         <Card>
           <div className="container">
-            <div className="icon">
-              <img src={cost_icon} alt="Total Cost Icon" />
+            <div className="item">
+              <div className="icon">
+                <img src={cost_icon} alt="Total Cost Icon" />
+              </div>
+              <div className="card-text">
+                <p>Total Cost</p>
+                <h2>N{filteredTotalCost}</h2>
+              </div>
             </div>
-            <div className="card-text">
-              <p>Total Cost</p>
-              <h2>N{filteredTotalCost}</h2>
+
+            <div className="item">
+              <div className="icon">
+                <img src={cost_icon} alt="Total Payment Icon" />
+              </div>
+              <div className="card-text">
+                <p>Total Payment</p>
+                <h2>N{filteredTotalPayment}</h2>
+              </div>
+            </div>
+
+            <div className="item">
+              <div className="icon">
+                <img src={cost_icon} alt="Total Balance Icon" />
+              </div>
+              <div className="card-text">
+                <p>Total Balance</p>
+                <h2>N{filteredTotalBalance}</h2>
+              </div>
             </div>
           </div>
         </Card>
 
-        <Card>
-          <div className="container">
-            <div className="icon">
-              <img src={cost_icon} alt="Total Payment Icon" />
-            </div>
-            <div className="card-text">
-              <p>Total Payment</p>
-              <h2>N{filteredTotalPayment}</h2>
-            </div>
-          </div>
-        </Card>
 
-        <Card>
-          <div className="container">
-            <div className="icon">
-              <img src={cost_icon} alt="Total Balance Icon" />
-            </div>
-            <div className="card-text">
-              <p>Total Balance</p>
-              <h2>N{filteredTotalBalance}</h2>
-            </div>
-          </div>
-        </Card>
+
+
       </div>
 
       {/* Filter Inputs */}
-      <div className="filters">
-        <input
-          type="text"
-          name="serviceType"
-          placeholder="Filter by Job Description"
-          value={filters.serviceType}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="text"
-          name="providerName"
-          placeholder="Filter by Service Provider"
-          value={filters.providerName}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="text"
-          name="customerName" // Added filter for customerName
-          placeholder="Filter by Customer Name"
-          value={filters.customerName}
-          onChange={handleFilterChange}
-        />
+      <Form>
+        <div className="filters">
+          <h2>Filter Services</h2>
+          <div className="input-group">
+            <div className="input-item">
+                <input
+                type="text"
+                name="serviceType"
+                placeholder="Filter by Job Description"
+                value={filters.serviceType}
+                onChange={handleFilterChange}
+              />
+            </div>
 
-        <input
-          type="phone"
-          name="customerPhone" // Added filter for customerName
-          placeholder="Filter by Customer Phonu Number"
-          value={filters.customerPhone}
-          onChange={handleFilterChange}
-        />
+            <div className="input-item">
+                <input
+                type="text"
+                name="providerName"
+                placeholder="Filter by Service Provider"
+                value={filters.providerName}
+                onChange={handleFilterChange}
+              />
+            </div>
+          </div>
 
-        <input
-          type="date"
-          name="dateFrom"
-          value={filters.dateFrom}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="date"
-          name="dateTo"
-          value={filters.dateTo}
-          onChange={handleFilterChange}
-        />
-      </div>
+          <div className="input-group">
+            <div className="input-item">
+                <input
+                type="text"
+                name="customerName" // Added filter for customerName
+                placeholder="Filter by Customer Name"
+                value={filters.customerName}
+                onChange={handleFilterChange}
+              />
+            </div>
 
-     
+            <div className="input-item">
+                <input
+                type="phone"
+                name="customerPhone" // Added filter for customerName
+                placeholder="Filter by Customer Phonu Number"
+                value={filters.customerPhone}
+                onChange={handleFilterChange}
+              />
+            </div>
+          </div>
+
+
+          <div className="input-group">
+            <div className="input-item">
+                <input
+                type="date"
+                name="dateFrom"
+                value={filters.dateFrom}
+                onChange={handleFilterChange}
+              />
+            </div>
+
+            <div className="input-item">
+                <input
+                type="date"
+                name="dateTo"
+                value={filters.dateTo}
+                onChange={handleFilterChange}
+              />
+            </div>
+          </div>         
+        </div>
+      </Form>
 
       {/* Service List */}
       {/* Services Table */}
 
       <Table>
-        <thead>
-          <tr>
-            <th>Job Description</th>
-            <th>Customer Name</th>
-            <th>Customer Phone</th>
-            <th>Job Cost</th>
-            <th>Payment Made</th>
-            <th>Balance</th>
-            <th>Service Provider</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredServices.map((service) => (
-            <tr key={service._id}>
-              <td>{service.serviceType}</td>
-              <td>{service.customerName}</td>
-              <td>{service.customerPhone}</td>
-              <td>N{service.cost}</td>
-              <td>N{service.payment}</td>
-              <td>
-                {service.cost > service.payment
-                  ? `N${service.cost - service.payment}`
-                  : "-"}
-              </td>
-              <td>{service.providerName}</td>
-              <td>{formatDateTo12Hours(service.date)}</td>
-              <td>
-                <button onClick={() => handleEdit(service)}>Edit</button>
-                <button onClick={() => deleteService(service._id)}>Delete</button>
-                <button onClick={() => handleDownloadInvoice(service)}>
-                  Download Invoice
-                </button>
-              </td>
+        <table>
+          <thead>
+            <tr>
+              <th>Job Description</th>
+              <th>Customer Name</th>
+              <th className="mobile-hide">Customer Phone</th>
+              <th className="mobile-hide">Job Cost</th>
+              <th>Payment Made</th>
+              <th>Balance</th>
+              <th className="mobile-hide">Service Provider</th>
+              <th className="mobile-hide">Date</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
+          </thead>
+          <tbody>
+            {filteredServices.map((service) => (
+              <tr key={service._id}>
+                <td data-label="customerName">{service.serviceType}</td>
+                <td>{service.customerName}</td>
+                <td className="mobile-hide">{service.customerPhone}</td>
+                <td className="mobile-hide">N{service.cost}</td>
+                <td>N{service.payment}</td>
+                <td>
+                  {service.cost > service.payment
+                    ? `N${service.cost - service.payment}`
+                    : "-"}
+                </td>
+                <td className="mobile-hide">{service.providerName}</td>
+                <td className="mobile-hide">{formatDateTo12Hours(service.date)}</td>
+                <td>
+                  <button onClick={() => handleEdit(service)}>Edit</button>
+                  <button onClick={() => deleteService(service._id)}>Delete</button>
+                  <button onClick={() => handleDownloadInvoice(service)}>
+                    Download Invoice
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </Table>
 
 
@@ -365,7 +393,7 @@ const ServiceList = () => {
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <span className="close" onClick={()=>{
+            <span className="close" onClick={() => {
               setIsModalOpen(false)
               setEditingServiceId(null);
               setFormData({
@@ -379,12 +407,14 @@ const ServiceList = () => {
               });
 
             }}>&times;</span>
-             {/* Add and Update Form */}
+            {/* Add and Update Form */}
+            <Form>
+
               <form onSubmit={handleSubmit} className="service-form">
                 <h3>{editingServiceId ? "Update Service" : "Add New Service"}</h3>
 
-               <div className="input-group">
-               <div className="input-item">
+                <div className="input-group">
+                  <div className="input-item">
                     <label htmlFor="service-type">Job Description</label>
                     <input
                       type="text"
@@ -395,9 +425,9 @@ const ServiceList = () => {
                       required
                     />
                   </div>
-               </div>
+                </div>
                 <div className="input-group">
-                  
+
 
                   <div className="input-item">
                     <label htmlFor="cost">Cost</label>
@@ -423,7 +453,7 @@ const ServiceList = () => {
                     />
                   </div>
 
-                   <div className="input-item">
+                  <div className="input-item">
                     <label htmlFor="date">Date</label>
                     <input
                       type="datetime-local"
@@ -470,13 +500,16 @@ const ServiceList = () => {
                       onChange={handleChange}
                       required
                     />
-                  </div>                
-                </div>               
+                  </div>
+                </div>
 
                 <button type="submit" className="submit-button">
                   {editingServiceId ? "Update Service" : "Add Service"}
                 </button>
               </form>
+
+
+            </Form>
           </div>
         </div>
       )
@@ -494,8 +527,8 @@ const ServiceList = () => {
 
 
 
-       {/* Hidden invoice template */}
-       <div ref={invoiceRef} className="receipt" style={{ display: "none" }}>
+      {/* Hidden invoice template */}
+      <div ref={invoiceRef} className="receipt" style={{ display: "none" }}>
         <div className="receipt-logo">
           <img src={logo} alt="Logo" />
         </div>
@@ -520,7 +553,7 @@ const ServiceList = () => {
       </div>
 
 
-      
+
     </>
   );
 };

@@ -28,7 +28,7 @@ const ServiceChart = () => {
 
   const fetchServices = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/services");
+      const response = await axios.get("https://printingapp.onrender.com/api/services");
       const sortedServices = response.data.sort(
         (a, b) => new Date(b.date) - new Date(a.date)
       );
@@ -78,37 +78,39 @@ const ServiceChart = () => {
       
         <Card>
           <div className="container">
-            <div className="icon">
-              <img src={cost_icon} alt="Total Cost Icon" />
+            <div className="item">
+              <div className="icon">
+                <img src={cost_icon} alt="Total Cost Icon" />
+              </div>
+              <div className="card-text">
+                <p>Total Cost</p>
+                <h2>N{totals.totalCost}</h2>
+              </div>
             </div>
-            <div className="card-text">
-              <p>Total Cost</p>
-              <h2>N{totals.totalCost}</h2>
+
+            <div className="item">
+              <div className="icon">
+                <img src={cost_icon} alt="Total Payment Icon" />
+              </div>
+              <div className="card-text">
+                <p>Total Payment</p>
+                <h2>N{totals.totalPayment}</h2>
+              </div>         
+            </div>
+
+            <div className="item">
+              <div className="icon">
+                <img src={cost_icon} alt="Total Balance Icon" />
+              </div>
+              <div className="card-text">
+                <p>Total Balance</p>
+                <h2>N{totals.totalBalance}</h2>
+              </div>
             </div>
           </div>
         </Card>
-        <Card>
-          <div className="container">
-            <div className="icon">
-              <img src={cost_icon} alt="Total Payment Icon" />
-            </div>
-            <div className="card-text">
-              <p>Total Payment</p>
-              <h2>N{totals.totalPayment}</h2>
-            </div>
-          </div>
-        </Card>
-        <Card>
-          <div className="container">
-            <div className="icon">
-              <img src={cost_icon} alt="Total Balance Icon" />
-            </div>
-            <div className="card-text">
-              <p>Total Balance</p>
-              <h2>N{totals.totalBalance}</h2>
-            </div>
-          </div>
-        </Card>
+       
+       
       </div>
 
       <div className="chart-container">

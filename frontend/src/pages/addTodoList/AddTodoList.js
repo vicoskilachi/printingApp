@@ -12,7 +12,7 @@ const AddTodoList = () => {
     console.log(e)
     e.preventDefault();
     console.log('hello world');
-    axios.post('http://localhost:5000/api/todos', {task});
+    axios.post('https://printingapp.onrender.com/api/todos', {task});
     setTask('');
     
   }

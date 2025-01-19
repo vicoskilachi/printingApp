@@ -10,7 +10,7 @@ const TodoList = () => {
   // Fetch todos from the backend
   const fetchTodos = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/todos');
+      const response = await axios.get('https://printingapp.onrender.com/api/todos');
       setTodos(response.data);
     } catch (error) {
       console.error('Error fetching todos:', error);
@@ -28,7 +28,7 @@ const TodoList = () => {
     if (editTodoId) {
       // Update existing todo
       try {
-        await axios.put(`http://localhost:5000/api/todos/${editTodoId}`, { task });
+        await axios.put(`https://printingapp.onrender.com/api/todos/${editTodoId}`, { task });
         setEditTodoId(null);
         setTask('');
         fetchTodos();
@@ -38,7 +38,7 @@ const TodoList = () => {
     } else {
       // Add new todo
       try {
-        await axios.post('http://localhost:5000/api/todos', { task });
+        await axios.post('https://printingapp.onrender.com/api/todos', { task });
         setTask('');
         fetchTodos();
       } catch (error) {
@@ -50,7 +50,7 @@ const TodoList = () => {
   // Delete a todo
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/todos/${id}`);
+      await axios.delete(`https://printingapp.onrender.com/api/todos/${id}`);
       fetchTodos();
     } catch (error) {
       console.error('Error deleting todo:', error);
@@ -66,7 +66,7 @@ const TodoList = () => {
   // Toggle todo completion status
   const handleToggle = async (id, completed) => {
     try {
-      await axios.put(`http://localhost:5000/api/todos/${id}`, {
+      await axios.put(`https://printingapp.onrender.com/api/todos/${id}`, {
         completed: !completed,
       });
 

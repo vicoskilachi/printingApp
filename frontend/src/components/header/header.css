@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 2rem;
-    padding: 0 4rem;
+    padding: 1rem 4rem;
     position: fixed;
     left: 0;
     right: 0;
@@ -12,3 +12,11 @@
     z-index: 9999;
 
 }
+
+@media screen and (max-width: 900px){
+    .header-container{
+        padding: 1rem 2rem;
+    }
+}
+
+

@@ -1,0 +1,36 @@
+.form{
+    margin: 1rem 0; 
+    width: 100%;
+}
+
+.form .input-group{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-bottom: .5rem;
+    gap: .5rem;
+}
+
+.form .input-item{
+    flex: 1;    
+}
+
+.form .input-item input{
+    padding: .8rem ;
+    width: 100%;
+   
+}
+
+.form button{
+    padding: .8rem 2rem;
+    outline: none;
+    border: none;
+    background: red;
+    color: #fff;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.form button:hover{
+    background: rgb(153, 5, 5);
+}

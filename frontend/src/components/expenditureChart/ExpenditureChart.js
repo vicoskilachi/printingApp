@@ -17,7 +17,7 @@ const ExpenditureChart = () => {
 
     const fetchExpenditures = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/expenditures');
+            const response = await axios.get('https://printingapp.onrender.com/api/expenditures');
             const data = response.data;
             setExpenditures(data);
             calculateMonthlySummary(data);
@@ -54,14 +54,7 @@ const ExpenditureChart = () => {
         setCurrentMonthTotal(totalThisMonth);
     };
 
-    const deleteExpenditure = async (id) => {
-        try {
-            await axios.delete(`http://localhost:5000/api/expenditures/${id}`);
-            fetchExpenditures();
-        } catch (error) {
-            console.error(error);
-        }
-    };
+   
 
     return (
         <div className="expenditure-list">

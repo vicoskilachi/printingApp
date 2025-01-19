@@ -11,7 +11,7 @@ const UpdateTodo = () => {
   useEffect(() => {
     const fetchTodo = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/todos/${id}`);
+        const response = await axios.get(`https://printingapp.onrender.com/api/todos/${id}`);
         setTask(response.data.task);
       } catch (error) {
         console.error('Error fetching todo:', error);
@@ -23,7 +23,7 @@ const UpdateTodo = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/todos/${id}`, { task });
+      await axios.put(`https://printingapp.onrender.com/api/todos/${id}`, { task });
       navigate('/');
     } catch (error) {
       console.error('Error updating todo:', error);
