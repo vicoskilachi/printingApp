@@ -1,0 +1,18 @@
+.sidebar-component ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+.sidebar-component ul a{
+    display: block;
+    border-bottom: 1px solid #fff;
+    padding: 10px 0 10px 10px;
+    text-decoration: none;
+    color: #fff;
+    transition: all .2s ease;
+  }
+  .sidebar-component ul a:hover{
+    background: rgb(161, 5, 5);
+    padding-left: 13px;
+  }

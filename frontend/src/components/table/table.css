@@ -1,0 +1,37 @@
+.table-container{    
+    width: 100%;   
+}
+.table-container table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-container td, .table-container th{
+    border: 1px solid #ddd;
+    padding: 8px;    
+}
+.table-container th:first-of-type{
+    border-radius: .5rem 0 0 0 ;
+    border:none;
+}
+
+.table-container th:last-of-type{
+    border-radius: 0 .5rem 0 0;
+    border:none;
+}
+
+.table-container tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+.table-container tr:hover{
+    background-color: #ddd;
+}
+
+.table-container th{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: red;
+    color: white;
+}

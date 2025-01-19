@@ -1,0 +1,100 @@
+.service-form{
+    margin: 1rem 0; 
+    width: 100%;
+}
+
+.service-form .input-group{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-bottom: .5rem;
+    gap: .5rem;
+}
+
+.service-form .input-item{
+    flex: 1;
+
+    
+}
+
+.service-form .input-item input{
+    padding: .8rem ;
+    width: 100%;
+   
+}
+
+.service-form button{
+    padding: .8rem 2rem;
+    outline: none;
+    border: none;
+    background: red;
+    color: #fff;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.service-form button:hover{
+    background: rgb(153, 5, 5);
+}
+
+.service-form button:focus{
+    
+}
+
+
+.receipt{
+    background-color: white;
+    padding: 2rem;
+    margin: 0;
+    width: 70%;
+    text-align: center;
+}
+
+.receipt-logo{
+    text-align: left;
+}
+
+
+.receipt h2{
+    background: red;
+    padding: 1rem 2rem;
+    color: #fff;
+    line-height: none;
+    margin: 1rem 0 0 0;
+}
+
+.receipt .acknowledge{
+    background: #e9e9e9;
+    padding: 1rem 2rem;
+    margin: 0;
+    line-height: none;
+}
+
+.receipt-text_content{
+    text-align: left;
+    padding: 1rem 2rem;
+}
+
+.receipt .receipt-content{
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 0 2rem;
+    text-align: left;
+}
+
+
+
+.receipt .footer-banner{
+    width: 600px;
+    margin: 2rem auto;
+
+}
+
+.receipt .footer-banner img{
+    width: 100%;
+    
+    
+}
+
+

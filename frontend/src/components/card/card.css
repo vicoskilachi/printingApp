@@ -1,0 +1,30 @@
+.card {    
+    border-radius: 8px;
+    padding: 1.2rem 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)  ; 
+    flex: 1;
+    background: red;
+    margin-bottom: 1rem;
+}
+.card .container{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card .card-text{
+    color: #fff;
+}
+
+.card .card-text p{
+    font-size: 1.2rem;
+    line-height: .2rem;
+    margin-bottom: 2rem;
+
+}
+
+.card .card-text h2{
+    font-size: 2rem;
+    line-height: .4rem;
+}
+
